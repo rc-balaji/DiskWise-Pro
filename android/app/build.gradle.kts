@@ -26,7 +26,10 @@ android {
         getByName("release") {
             // Installable GitHub Actions test APK. Replace with your own release keystore for distribution.
             signingConfig = signingConfigs.getByName("debug")
+            // Release APK stays installable without code or resource shrinking.
+            // Android Gradle Plugin requires minification if resource shrinking is enabled.
             isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
 }

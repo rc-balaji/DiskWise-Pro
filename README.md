@@ -1,3 +1,17 @@
+# v3.2 release build fix (Gradle resource shrinking)
+
+The v3.1 GitHub Actions release build failed with:
+
+`Removing unused resources requires unused code shrinking to be turned on.`
+
+**Fixed in `android/app/build.gradle.kts`:** the release build now explicitly sets both `isMinifyEnabled = false` and `isShrinkResources = false`. This is a safe configuration for a prototype APK: resource shrinking must not be enabled while code shrinking is disabled. No Gradle validation bypass is used. The release APK remains signed with the debug signing configuration for testing only.
+
+To update a previous repo, **replace** `android/app/build.gradle.kts` and `.github/workflows/build-android.yml` (or upload the entire project), commit, then run the GitHub Actions workflow again. Make sure the changes are at the repository root, not inside a nested folder. The artifact is named `DiskWise-Mobile-v3.2-APK`.
+
+The exact error is fixed in the source configuration; the full APK build still needs verification on GitHub Actions.
+
+---
+
 ## v3.1 build fix (Flutter 3.47.7)
 
 The original v3 archive used outdated build versions, which cause `flutter build apk --release` to fail at `dev.flutter.flutter-gradle-plugin`. This ZIP pins the CI Flutter SDK to **3.47.7** and uses **Gradle 8.14**, **Android Gradle Plugin 8.11.1**, **Kotlin Gradle Plugin 2.2.20**, and **Java 17**. No dependency-validation skip flags.

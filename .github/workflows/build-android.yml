@@ -46,6 +46,11 @@ jobs:
           chmod +x android/gradlew
           echo "ANDROID Gradle wrapper ready; checked-in Kotlin source retained"
           grep -F 'gradle-8.14-bin.zip' android/gradle/wrapper/gradle-wrapper.properties
+      - name: Validate release shrink settings
+        shell: bash
+        run: |
+          grep -Fq 'isMinifyEnabled = false' android/app/build.gradle.kts
+          grep -Fq 'isShrinkResources = false' android/app/build.gradle.kts
       - name: Resolve Flutter dependencies
         run: flutter pub get
       - name: Dart static analysis
@@ -61,7 +66,7 @@ jobs:
       - name: Publish APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: DiskWise-Mobile-v3.1-APK
+          name: DiskWise-Mobile-v3.2-APK
           path: |
             build/app/outputs/flutter-apk/app-release.apk
             build/app/outputs/flutter-apk/SHA256SUMS.txt
