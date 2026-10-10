@@ -27,7 +27,15 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+          flutter-version: "3.47.7"
           cache: true
+      - name: Verify pinned Android build versions
+        shell: bash
+        run: |
+          grep -Fq 'gradle-8.14-bin.zip' android/gradle/wrapper/gradle-wrapper.properties
+          grep -Fq 'version "8.11.1"' android/settings.gradle.kts
+          grep -Fq 'version "2.2.20"' android/settings.gradle.kts
+          flutter --version
       - name: Regenerate official Gradle wrapper files
         shell: bash
         run: |
@@ -37,6 +45,7 @@ jobs:
           cp /tmp/diskwise_wrapper/android/gradle/wrapper/gradle-wrapper.jar android/gradle/wrapper/gradle-wrapper.jar
           chmod +x android/gradlew
           echo "ANDROID Gradle wrapper ready; checked-in Kotlin source retained"
+          grep -F 'gradle-8.14-bin.zip' android/gradle/wrapper/gradle-wrapper.properties
       - name: Resolve Flutter dependencies
         run: flutter pub get
       - name: Dart static analysis
@@ -52,7 +61,7 @@ jobs:
       - name: Publish APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: DiskWise-Mobile-v3-APK
+          name: DiskWise-Mobile-v3.1-APK
           path: |
             build/app/outputs/flutter-apk/app-release.apk
             build/app/outputs/flutter-apk/SHA256SUMS.txt

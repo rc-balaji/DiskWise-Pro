@@ -1,4 +1,10 @@
-# DiskWise Mobile v3 — Complete Flutter + Native Kotlin Android project
+## v3.1 build fix (Flutter 3.47.7)
+
+The original v3 archive used outdated build versions, which cause `flutter build apk --release` to fail at `dev.flutter.flutter-gradle-plugin`. This ZIP pins the CI Flutter SDK to **3.47.7** and uses **Gradle 8.14**, **Android Gradle Plugin 8.11.1**, **Kotlin Gradle Plugin 2.2.20**, and **Java 17**. No dependency-validation skip flags.
+
+**If replacing a previous GitHub repository:** upload and overwrite **all** files in this archive (including `.github/`), then commit and run **Actions → Build Android APK → Run workflow**. If the old build workflow remains at the repository root it can build using old settings. This release fixes compatibility configuration only; it is not a verified APK until GitHub Actions completes.
+
+# DiskWise Mobile v3.1 (build compatibility fix) — Complete Flutter + Native Kotlin Android project
 
 An offline, user-controlled storage analysis and duplicate cleanup app for **Android 11+ (API 30+)**. This ZIP includes an actual `android/` application project, Kotlin native scan engine, Flutter screens, asset resources, tests, and `.github/workflows/build-android.yml`.
 
