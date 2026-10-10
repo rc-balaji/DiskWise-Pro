@@ -1,0 +1,8 @@
+<resources>
+    <style name="LaunchTheme" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">#101725</item>
+    </style>
+    <style name="NormalTheme" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">#101725</item>
+    </style>
+</resources>

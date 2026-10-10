@@ -1,0 +1,23 @@
+// Manual standalone JVM test aid. This is not compiled into the APK.
+// To execute: kotlinc ScanCore.kt <this file renamed .kt> -include-runtime -d /tmp/scan-test.jar && java -jar /tmp/scan-test.jar
+package com.diskwise.mobile
+
+import java.io.File
+import java.nio.file.Files
+import java.util.concurrent.atomic.AtomicBoolean
+
+fun main() {
+    val sandbox = Files.createTempDirectory("diskwise-engine-test").toFile()
+    try {
+        val a = File(sandbox, "alpha.txt").apply { writeText("diskwise-unique-content-123456") }
+        val b = File(sandbox, "completely-different-name.txt").apply { writeText("diskwise-unique-content-123456") }
+        File(sandbox, "unrelated.txt").writeText("unrelated data")
+        File(sandbox, "empty.txt").writeText("")
+        val snapshot = ScanCore.scan(sandbox, 1, 1, AtomicBoolean(false))
+        check(snapshot.filesChecked == 4) { "Expected four readable files" }
+        check(snapshot.duplicateGroups.size == 1) { "Expected one SHA-verified group" }
+        check(snapshot.duplicateGroups[0].items.map { it.path }.toSet() == setOf(a.path, b.path))
+        check(snapshot.duplicateBytes == a.length())
+        println("PASS: cross-name SHA256 duplicates, unique files, empty files, reclaimable bytes")
+    } finally { sandbox.deleteRecursively() }
+}
